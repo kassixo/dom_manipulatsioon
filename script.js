@@ -69,8 +69,8 @@ magicWand.className = "magical-item wand"
 magicWand.textContent = "Magic Wand !!!"
 
 playground.append (magicWand)
-console.log("Div id: ", magicWand.id)
-console.log("Div class: ",magicWand.className)
+console.log("Div id: ", magicWand.id) // nii saan kätte konsoolist selle asja id
+console.log("Div class: ",magicWand.className) // klassi
 
 // console.log(magicWand.getAttribute('class))
 
@@ -97,12 +97,12 @@ magicWand.classList.replace('test3', 'cool')
 
 console.log("Third class", magicWand.classList.item(1)) //sulgudes näitab mitmenda koha klassi
 
-// ----- INLINE STIILID
+// ----- INLINE STIILID / ignored by css?
 
 magicWand.style.fontSize = '50px'
 magicWand.style.fontWeight = '700'
-magicWand.style.color = '#cccccc'
-playground.style.backgroundColor = '#1e1e1e'
+magicWand.style.color = 'blueviolet' // võib ka rgb, hsla, hex kasutada
+playground.style.backgroundColor = '#f9f9f9'
 
 
 // ----- EVENT HANDLING
@@ -136,5 +136,78 @@ function spellCast() {
 
 mButton.addEventListener('click', spellCast)
 
-//see rida eemaldab click listeneri ja funktsiooni sellelt asjalt
-mButton.removeEventListener('click', spellCast)
+//see rida eemaldab click listeneri ja funktsiooni sellelt asjalt, vajalik on kasutada sama eventlisteneri "click" mis add juhul
+// mButton.removeEventListener('click', spellCast)
+
+// ----- DÜNAAMILISELT ELEMENTIDE LISAMINE JA EEMALDAMINE
+
+const spellList = document.createElement('ul') // tekitan ul tagid nimega "spellList"
+playground.append(spellList) // lisan need lehele
+
+function addSpell(spellName) {
+    const spell = document.createElement('li') // tekitan li tagid
+    spell.textContent = spellName // li tagide sees on tekstiväärtus "spellName"
+    const removeButton = document.createElement('button') // tekitab lehele nupu
+    removeButton.textContent = 'Remove' // nupul olev tekst
+    removeButton.addEventListener('click', () => spell.remove()) // nupule vajutades toimub spell consti eemaldamine
+    spell.append(removeButton) // lisab li elemendile remove nupu
+    spellList.append(spell) // lisab varemloodud spellList ul tagidele funktsiooni ülaosas olevad li tagid
+}
+
+addSpell('🐱‍🐉 Dino') // loob elemendi li tagide vahele, kasutades addSpell funktsiooni
+addSpell('🌹 Roos')
+addSpell('🎉 Pidu')
+addSpell('🎶 Muusika')
+addSpell('🎂 Tort')
+
+// ----- TRAVERSING THE DOM / element relationships
+
+const parentElement = document.createElement('div') // loob parent elemendi div
+const childElement1 = document.createElement('p') // mille sees on p
+const childElement2 = document.createElement('span') // ja p sees on span
+
+parentElement.append(childElement1, childElement2) // lisab parent elemendi sisse lapsed
+playground.append(parentElement) // lisab selle parent elemendi lehele (const "playground" eelnevalt loodud)
+
+console.log(parentElement.firstChild) // annab konsoolis, mis on parentelemendi esimene laps
+console.log(parentElement.lastChild) // viimane laps
+console.log(childElement1.nextSibling) // lapselemendist järgmine
+console.log(childElement2.previousSibling) // eelmine
+console.log(childElement1.parentNode) // mis on parent container
+
+// ----- DOKUMENTIDE FRAGMENDID
+/* not part of active dom tree
+can improve performance
+doesn't cause page reflow
+*/
+
+const fragment = document.createDocumentFragment()
+
+// loop
+
+for (let i = 0; i < 10; i++) { // number tähistab, et mitu järgnevalt loodud li tagi lisatakse
+    const magicalItem = document.createElement('li') // li tagid
+    magicalItem.textContent = `${i + 1}. 👀 Maagilised silmad` // li sisutekst - siin peab kasutama neid teistmoodi ülakomasid, muidu ei tööta? i+1 tähistab, et teksti järel lisatakse ka number, mis suureneb igal real ühe võrra
+    fragment.append(magicalItem) // lisab fragmendile selle li asja
+}
+
+const spellList2 = document.createElement('ul')
+playground.append(spellList2)
+
+spellList2.append(fragment) // lisab fragmenti nende ul elementide vahele
+
+// ----- USING TEMPLATES
+/* võtab kasutusele HTMLis loodud template, ning loob selle põhjal div-h2-p containerid lehele */
+
+
+const template = document.getElementById('wizard-template'); // võtab htmlist <template id="wizard-template"> sisu
+
+function createWizard(name, speciality) {
+  const wizardElement = template.content.cloneNode(true) // võtab const template, cloneNode kloonib templiidi
+  wizardElement.querySelector('.wizard-name').textContent = name; // name ühildub funktsioonis (name) ja toimib htmlis määratud h2-na
+  wizardElement.querySelector('.wizard-speciality').textContent = speciality; // htmlis p class
+  playground.append(wizardElement);
+}
+
+createWizard('Merlin', 'Time Magic') // vastavalt funktsiooni ülesehitusele, esimene sulgudes olev sõna on name (h2) ja teine speciality(p)
+createWizard('Gandalf', 'Fireballs')
