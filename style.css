@@ -1,3 +1,29 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 } 
+
+#counter {
+    padding: 16px;
+    background-color: #ffc6c6;
+    border-radius: 10px;
+}
+
+#number {
+    font-size:48px;
+    margin: 0;
+}
+
+#klikiharjutus {
+    background-color: #ffd2ee;
+    border-radius: 10px;
+
+}
+
+table, th, td {
+    border: 1px solid #e2e2e2;
+    border-radius:3px;
+}
+
+th, td {
+      padding: 8px 16px;  
+}

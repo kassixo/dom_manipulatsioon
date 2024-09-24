@@ -1,26 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div id="playground">
-        
-    <h1>Magic of the DOM</h1>
+      <h1>Magic of the DOM</h1>
 
-    <p>Visible secrets</p>
-    <p style="display:none;">Invisible enigmas</p>
-
+      <p>Visible secrets</p>
+      <p style="display: none">Invisible enigmas</p>
     </div>
+
     <template id="wizard-template">
-        <div class="wizard">
-          <h2 class="wizard-name"></h2>
-          <p class="wizard-speciality"></p>
-        </div>
-      </template>
+      <div class="wizard">
+        <h2 class="wizard-name"></h2>
+        <p class="wizard-speciality"></p>
+      </div>
+    </template>
+
+    <div id="counter">
+      <p id="number">0</p>
+      <button id="plus">+</button>
+      <button id="minus">-</button>
+      <button id="reset">Reset</button>
+    </div>
+
+    <div id="klikiharjutus">
+      Klikiharjutus
+      <h2>Pealkiri</h2>
+      <p>Siia vajutades vist <span>juhtub midagi</span>.</p>
+    </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th id="cellname" scope="col">Nimi</th>
+            <th id="cellprice" scope="col">Hind (€)</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
