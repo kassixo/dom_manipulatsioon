@@ -156,8 +156,6 @@ function addSpell(spellName) {
 
 addSpell("🐱‍🐉 Dino"); // loob elemendi li tagide vahele, kasutades addSpell funktsiooni
 addSpell("🌹 Roos");
-addSpell("🎉 Pidu");
-addSpell("🎶 Muusika");
 addSpell("🎂 Tort");
 
 // ----- TRAVERSING THE DOM / element relationships
@@ -185,7 +183,7 @@ const fragment = document.createDocumentFragment();
 
 // loop
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 5; i++) {
   // number tähistab, et mitu järgnevalt loodud li tagi lisatakse
   const magicalItem = document.createElement("li"); // li tagid
   magicalItem.textContent = `${i + 1}. 👀 Maagilised silmad`; // li sisutekst - siin peab kasutama neid teistmoodi ülakomasid, muidu ei tööta? i+1 tähistab, et teksti järel lisatakse ka number, mis suureneb igal real ühe võrra
@@ -210,7 +208,7 @@ function createWizard(name, speciality) {
 }
 
 createWizard("Merlin", "Time Magic"); // vastavalt funktsiooni ülesehitusele, esimene sulgudes olev sõna on name (h2) ja teine speciality(p)
-createWizard("Gandalf", "Fireballs");
+// createWizard("Gandalf", "Fireballs");
 
 // ----- 24.09 EVENT LISTENERID
 
@@ -252,17 +250,17 @@ reset.onclick = () => {
 
 // const divClick = document.getElementsByTagName('div')
 
-const divClick = document.querySelectorAll("div");
+// const divClick = document.querySelectorAll("div");
 
-document.addEventListener("click", (event) => {
-  console.log(event, event.target);
-  if (
-    event.target.nodeName === "DIV" ||
-    event.target.parentNode.nodeName === "DIV"
-  ) {
-    alert("Ära vajuta");
-  }
-});
+// document.addEventListener("click", (event) => {
+//   console.log(event, event.target);
+//   if (
+//     event.target.nodeName === "DIV" ||
+//     event.target.parentNode.nodeName === "DIV"
+//   ) {
+//     alert("Ära vajuta");
+//   }
+// });
 
 // divClick.onclick = () => {
 //     alert('test')
@@ -322,56 +320,110 @@ const data = [
   },
 ];
 
-const genTable = () => {
-  //tabeli keha
-  const tableBody = document.querySelector("tbody");
+/* SEE KOOD TÖÖTAB KA TABELI GENEREERIMISEL - õpetaja poolt tehtud */
 
-  for (let i = 0; i < data.length; i++) {
-    //create row
+// const genTable = () => {
+//   //tabeli keha
+//   const tableBody = document.querySelector("tbody");
+
+//   for (let i = 0; i < data.length; i++) {
+//     //create row
+//     const row = document.createElement("tr");
+
+//     for (let j = 0; j < 2; j++) {
+//       //create cells
+//       const cell = document.createElement("td");
+//       if (j === 0) {
+//         cell.append(data[i].name);
+//       } else {
+//         cell.append(data[i].price);
+//       }
+//       row.append(cell);
+//     }
+//     tableBody.append(row);
+//   }
+// };
+
+// genTable();
+
+/* tabeli genereerimine teistmoodi */
+
+const genTable = () => {
+  const tableBody = document.querySelector("tbody");
+  tableBody.innerHTML = ""; // tühjenda tabel enne genereerimist
+
+  data.forEach((item) => {
     const row = document.createElement("tr");
 
-    for (let j = 0; j < 2; j++) {
-      //create cells
-      const cell = document.createElement("td");
-      if (j === 0) {
-        cell.append(data[i].name);
-      } else {
-        cell.append(data[i].price);
-      }
-      row.append(cell);
-    }
-    tableBody.append(row);
-  }
+    const nameCell = document.createElement("td");
+    nameCell.append(item.name);
+    row.appendChild(nameCell);
+
+    const priceCell = document.createElement("td");
+    priceCell.append(item.price);
+    row.appendChild(priceCell);
+
+    tableBody.appendChild(row);
+  });
 };
 
 genTable();
 
-const tableButton = document.querySelectorAll('th button')
+// sortimise järjekord väiksemast suuremani
+let nameSortAsc = true;
+let priceSortAsc = true;
 
-const sortData = (data, param, direction = "asc") => {
-    tableBody.innerHTML = '';
-    const sortedData =
-      direction == "asc"
-        ? [...data].sort(function (a, b) {
-            if (a[param] < b[param]) {
-              return -1;
-            }
-            if (a[param] > b[param]) {
-              return 1;
-            }
-            return 0;
-          })
-        : [...data].sort(function (a, b) {
-            if (b[param] < a[param]) {
-              return -1;
-            }
-            if (b[param] > a[param]) {
-              return 1;
-            }
-            return 0;
-          });
-    genTable(sortedData);
-  };
+// funktsioon sortimiseks
+const sortTable = (column, ascending) => {
+  data.sort((a, b) => {
+    if (column === "name") {
+      return ascending
+        ? a.name.localeCompare(b.name)
+        : b.name.localeCompare(a.name);
+    } else if (column === "price") {
+      return ascending ? a.price - b.price : b.price - a.price;
+    }
+  });
+  genTable(); // lae tabel uuesti
+};
+
+// Event listeners
+document.getElementById("nameHeader").addEventListener("click", () => {
+  sortTable("name", nameSortAsc); // sordi nime järgi
+  nameSortAsc = !nameSortAsc; // sortimise suund
+});
+
+document.getElementById("priceHeader").addEventListener("click", () => {
+  sortTable("price", priceSortAsc);
+  priceSortAsc = !priceSortAsc;
+});
+
+// const tableButton = document.querySelectorAll('th button')
+
+// const sortData = (data, param, direction = "asc") => {
+//     tableBody.innerHTML = '';
+//     const sortedData =
+//       direction == "asc"
+//         ? [...data].sort(function (a, b) {
+//             if (a[param] < b[param]) {
+//               return -1;
+//             }
+//             if (a[param] > b[param]) {
+//               return 1;
+//             }
+//             return 0;
+//           })
+//         : [...data].sort(function (a, b) {
+//             if (b[param] < a[param]) {
+//               return -1;
+//             }
+//             if (b[param] > a[param]) {
+//               return 1;
+//             }
+//             return 0;
+//           });
+//     genTable(sortedData);
+//   };
 
 // function sortBy({ data, prop, desc = false, parse = x => x }) {
 //     const sortOrder = desc ? -1 : 1;

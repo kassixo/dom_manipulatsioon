@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div class="twitterpost">
+      <img class="profilepic" src="images/pxls2.jpg" alt="minu pilt" />
+      <p class="username">@katre</p>
+      <p class="post-content">üks tunnitöö test</p>
+    </div>
+
     <div id="playground">
       <h1>Magic of the DOM</h1>
 
@@ -34,15 +40,15 @@
       <p>Siia vajutades vist <span>juhtub midagi</span>.</p>
     </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th id="cellname" scope="col">Nimi</th>
-            <th id="cellprice" scope="col">Hind (€)</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+    <table id="sortableTable">
+      <thead>
+        <tr>
+          <th id="nameHeader" scope="col">Nimi</th>
+          <th id="priceHeader" scope="col">Hind (€)</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
 
     <script src="script.js"></script>
   </body>
